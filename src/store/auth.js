@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-catch */
 /* eslint-disable no-unused-vars */
 import firebase from "firebase/compat/app";
+import database from "firebase/compat/database";
 
 export default {
   actions: {
@@ -16,11 +17,10 @@ export default {
       try {
         await firebase.auth().createUserWithEmailAndPassword(email, password);
         const uid = await dispatch("getUid");
-        // await firebase.database().ref(`/users/${uid}/info`).set({
-        //   bill: 10000,
-        //   name,
-        // });
-        // database in not a function
+        await firebase.database().ref(`/users/${uid}/info`).set({
+          bill: 10000,
+          name,
+        });
       } catch (e) {
         commit("setError", e);
         throw e;
@@ -30,8 +30,9 @@ export default {
       const user = firebase.auth().currentUser;
       return user ? user.uid : null;
     },
-    async logout() {
+    async logout({ commit }) {
       await firebase.auth().signOut();
+      commit("clearInfo");
     },
   },
 };
