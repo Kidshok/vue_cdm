@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import firebase from "firebase/compat";
+import database from "firebase/compat/database";
 
 export default {
   state: {
@@ -13,6 +15,17 @@ export default {
     },
   },
   actions: {
+    async updateInfo({ dispatch, commit, getters }, toUpdate) {
+      try {
+        const uid = await dispatch("getUid");
+        const updateData = { ...getters.info, ...toUpdate };
+        await firebase.database().ref(`/users/${uid}/info`).update(updateData);
+        commit("setInfo", updateData);
+      } catch (e) {
+        commit("setError", e);
+        throw e;
+      }
+    },
     async fetchInfo({ dispatch, commit }) {
       try {
         const uid = await dispatch("getUid");
@@ -21,7 +34,10 @@ export default {
         ).val();
         commit("setInfo", info);
         // eslint-disable-next-line no-empty
-      } catch (e) {}
+      } catch (e) {
+        commit("setError", e);
+        throw e;
+      }
     },
   },
   getters: {
