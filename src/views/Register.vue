@@ -1,7 +1,7 @@
 <template>
   <form class="card auth-card" @submit.prevent="submitHandler">
     <div class="card-content">
-      <span class="card-title">Домашняя бухгалтерия</span>
+      <span class="card-title">{{ "CRM_Title" | localize }}</span>
       <div class="input-field">
         <input
           id="email"
@@ -17,12 +17,12 @@
         <small
           v-if="$v.email.$dirty && !$v.email.required"
           class="helper-text invalid"
-          >Поле email не должно быть пустым</small
+          >{{ "Message_EmailRequired" | localize }}</small
         >
         <small
           v-else-if="$v.email.$dirty && !$v.email.email"
           class="helper-text invalid"
-          >Введите корректный email</small
+          >{{ "Message_EmailValid" | localize }}</small
         >
       </div>
       <div class="input-field">
@@ -40,13 +40,13 @@
         <small
           v-if="$v.password.$dirty && !$v.password.required"
           class="helper-text invalid"
-          >Введите пароль</small
+          >{{ "Password" | localize }}</small
         >
         <small
           v-else-if="$v.password.$dirty && !$v.password.minLength"
           class="helper-text invalid"
-          >Минимальная велечина пароля {{ $v.password.$params.minLength.min }}.
-          Сейчас он {{ password.length }}</small
+          >{{ "Message_MinLength" | localize }}
+          {{ $v.password.$params.minLength.min }}</small
         >
       </div>
       <div class="input-field">
@@ -62,27 +62,27 @@
         <small
           class="helper-text invalid"
           v-if="$v.name.$dirty && !$v.name.required"
-          >Введите ваше имя</small
+          >{{ "Message_EnterName" | localize }}</small
         >
       </div>
       <p>
         <label>
           <input type="checkbox" v-model="agree" />
-          <span>С правилами согласен</span>
+          <span>{{ "AcceptRules" | localize }}</span>
         </label>
       </p>
     </div>
     <div class="card-action">
       <div>
         <button class="btn waves-effect waves-light auth-submit" type="submit">
-          Зарегистрироваться
+          {{ "Register" | localize }}
           <i class="material-icons right">send</i>
         </button>
       </div>
 
       <p class="center">
-        Уже есть аккаунт?
-        <router-link to="/login">Войти!</router-link>
+        {{ "HasAccount" | localize }}
+        <router-link to="/login">{{ "Login" | localize }}</router-link>
       </p>
     </div>
   </form>
@@ -120,7 +120,7 @@ export default {
 
       try {
         await this.$store.dispatch("register", formData);
-       
+
         this.$router.push("/");
         // eslint-disable-next-line no-empty
       } catch (e) {}

@@ -1,4 +1,5 @@
 import M from "materialize-css";
+import localizeFilter from "../filters/locaize.filter";
 /* eslint-disable no-unused-vars */
 export default {
   install(Vue, options) {
@@ -7,7 +8,7 @@ export default {
     };
 
     Vue.prototype.$error = function (html) {
-      M.toast({ html: `[ошибка]: ${html}` });
+      M.toast({ html: `[${localizeFilter("Error")}]: ${html}` });
     };
   },
 };
